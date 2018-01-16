@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Message Classifier</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
+  <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1,minimal-ui" name="viewport">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons">
+    <link rel="stylesheet" href="https://unpkg.com/vue-material@beta/dist/vue-material.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/vue-material@beta/dist/theme/default.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
+      integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+</head>
+<body>
+   <div id="app">
+       {{message}}
+        <span class="align-middle">
+        <md-content class="md-primary">Html Content
+            <div id="iframe_html">{{message}}</div>
+        </md-content>
+       <md-button class="md-primary">Yes</md-button>
+       <md-button class="md-primary">No</md-button>
+        </span>
+
+    </div>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/vue-material@beta"></script>
+    <script>
+      Vue.use(VueMaterial.default);
+
+      var app = new Vue({
+        el: '#app',
+        data: {
+            msg: 'msg'
+        }
+      });
+        var iframe_element = new Vue({
+            el: '#iframe_html',
+            data: {
+                message: 'loading...'
+            },
+            methods: {
+                loadMessages: function() {
+                this.message = 'lala';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+class MessageFetch(object):
+    pass
