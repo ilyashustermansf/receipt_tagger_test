@@ -1,12 +1,12 @@
 from unittest import TestCase, skip
 
-from tagger_machine.message_fetch import MessageFetch
+from tagger_machine.message_fetch import MessagesHandler
 
 
 class TestMessageFetch(TestCase):
 
     def setUp(self):
-        self.message_fetcher = MessageFetch()
+        self.message_fetcher = MessagesHandler()
 
     def test_load_fifty_messages(self):
         self.assertTrue(len(self.message_fetcher.
