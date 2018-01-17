@@ -2,8 +2,11 @@ import os
 import tornado.ioloop
 import tornado.web
 
-CLIENT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), 'web_client'))
-CLIENT_STATIC = os.path.abspath(os.path.join(os.path.dirname(__file__), 'web_client/static_files'))
+CLIENT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                           'web_client'))
+CLIENT_STATIC = os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                             'web_client/static_files'))
+
 
 class MainHandler(tornado.web.RequestHandler):
 
@@ -19,7 +22,8 @@ class MainHandler(tornado.web.RequestHandler):
 
 def make_app():
     handlers = [
-        (r'/static_files/(.*)', tornado.web.StaticFileHandler, {'path': CLIENT_STATIC}),
+        (r'/static_files/(.*)', tornado.web.StaticFileHandler,
+         {'path': CLIENT_STATIC}),
         (r'/', MainHandler)
     ]
     return tornado.web.Application(handlers)
