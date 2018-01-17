@@ -16,6 +16,8 @@ class MessageTable(TableBase):
     def get_messages(self, num_messages, start):
         session = SqlAlchemySession.get_session()
         db_session = session.db.session
-        message = db_session.query(Message).first()
-        print(message.id)
-        return np.random.randint(-6,8,49)
+        messages = db_session.query(Message).limit(num_messages).offset(start)
+        return [
+            {'id': message.id}
+            for message in messages
+        ]
