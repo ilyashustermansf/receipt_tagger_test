@@ -3,5 +3,5 @@ from plugins.database.message_table import MessageTable
 
 class MessageFetch(object):
 
-    def load_messages(self, messages_amount, start):
-        return MessageTable().get_messages(messages_amount, start)
+    def load_messages(self, messages_amount, offset):
+        return MessageTable().get_messages(messages_amount, offset)
