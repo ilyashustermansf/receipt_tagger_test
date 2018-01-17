@@ -4,13 +4,11 @@
   <title>Message Classifier</title>
   <meta charset="utf-8">
     <meta content="width=device-width,initial-scale=1,minimal-ui" name="viewport">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons">
-    <!--<link rel="stylesheet" href="https://unpkg.com/vue-material@beta/dist/vue-material.min.css">-->
-    <link rel="stylesheet" href="https://unpkg.com/vue-material@beta/dist/theme/default.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
+    <link rel="stylesheet" href="static_files/vue_default.css">
+<link rel="stylesheet" href="static_files/bootstrap.min.css"
       integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
-        <script src="https://unpkg.com/vue"></script>
-    <script src="https://unpkg.com/vue-material@beta"></script>
+        <script src="static_files/vue.js"></script>
+    <script src="static_files/vue_material.min.js"></script>
 </head>
 <body>
 <div>
@@ -48,9 +46,9 @@
                 iframeLoaded: function () {
                   var iFrameID = document.getElementById('iframe_message');
                   if(iFrameID) {
-                        iFrameID.height = "";
-                        iFrameID.width = "";
-                        var width = 1000;
+                      iFrameID.height = "";
+                      iFrameID.width = "";
+                      var width = 1000;
                       var scrollWidth = iFrameID.contentWindow.document.body.scrollWidth;
                       if(scrollWidth> width){
                           width = scrollWidth;

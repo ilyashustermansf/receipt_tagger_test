@@ -15,7 +15,7 @@ class DbSqlAlchemy(object):
         self._session = None
         self._sessionmaker = None
 
-    def connect(self, settings=None):
+    def connect(self):
         connection_name = 'default'
         config = DATABASES[connection_name]
         url = 'postgresql://{username}:{password}@{host}:{port}/{db}' \

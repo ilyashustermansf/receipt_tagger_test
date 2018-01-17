@@ -15,7 +15,6 @@ class TestMessageFetch(TestCase):
     def test_add_answers(self):
         pass
 
-    @skip
     def test_load_messages_increased_count(self):
         self.message_fetcher.start += 1
         messages = self.message_fetcher.load_messages()

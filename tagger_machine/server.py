@@ -2,8 +2,8 @@ import os
 import tornado.ioloop
 import tornado.web
 
-VUE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), 'web_client'))
-
+CLIENT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), 'web_client'))
+CLIENT_STATIC = os.path.abspath(os.path.join(os.path.dirname(__file__), 'web_client/static_files'))
 
 class MainHandler(tornado.web.RequestHandler):
 
@@ -13,14 +13,16 @@ class MainHandler(tornado.web.RequestHandler):
         self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
 
     def get(self):
-        with open(VUE_PATH + "/index.html", 'r') as file:
+        with open(CLIENT_PATH + "/index.html", 'r') as file:
             self.write(file.read())
 
 
 def make_app():
-    return tornado.web.Application([
-        (r"/", MainHandler),
-    ])
+    handlers = [
+        (r'/static_files/(.*)', tornado.web.StaticFileHandler, {'path': CLIENT_STATIC}),
+        (r'/', MainHandler)
+    ]
+    return tornado.web.Application(handlers)
 
 
 if __name__ == "__main__":
