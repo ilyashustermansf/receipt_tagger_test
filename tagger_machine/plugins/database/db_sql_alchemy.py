@@ -24,7 +24,6 @@ class DbSqlAlchemy(object):
                     host=config['HOST'],
                     db=config['NAME'],
                     port=config['PORT'])
-        print(url)
         self.engine = sqlalchemy.create_engine(url)
         self.connection = self.engine.connect()
         self.cursor = self.connection

@@ -6,7 +6,7 @@ from tagger_machine.message_fetch import MessageFetch
 class TestMessageFetch(TestCase):
 
     def setUp(self):
-        self.message_fetcher = MessageFetch(max_loading_messages=50, counter=1)
+        self.message_fetcher = MessageFetch(num_messages=50, start=1)
 
     def test_load_fifty_messages(self):
         self.assertTrue(len(self.message_fetcher.load_messages()) == 50)
@@ -17,9 +17,9 @@ class TestMessageFetch(TestCase):
 
     @skip
     def test_load_messages_increased_count(self):
-        self.message_fetcher.counter += 1
+        self.message_fetcher.start += 1
         messages = self.message_fetcher.load_messages()
-        self.assertEqual(messages[0]['id'], 51);
+        self.assertEqual(messages[0]['id'], 2)
 
     @skip
     def test_load_messages_and_commit_answers(self):
