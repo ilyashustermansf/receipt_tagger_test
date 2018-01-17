@@ -2,11 +2,10 @@
 <html>
 <head>
   <title>Message Classifier</title>
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
   <meta charset="utf-8">
     <meta content="width=device-width,initial-scale=1,minimal-ui" name="viewport">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons">
-    <link rel="stylesheet" href="https://unpkg.com/vue-material@beta/dist/vue-material.min.css">
+    <!--<link rel="stylesheet" href="https://unpkg.com/vue-material@beta/dist/vue-material.min.css">-->
     <link rel="stylesheet" href="https://unpkg.com/vue-material@beta/dist/theme/default.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
       integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
@@ -14,48 +13,53 @@
     <script src="https://unpkg.com/vue-material@beta"></script>
 </head>
 <body>
-
+<div>
 <div class="text-center">
 
     <div id="message_content">
         <h1>{{title}}</h1>
-        <div >
-            <iframe id="iframe_message" onload="iframeLoaded()" :src="messageDomain" ></iframe>
-        </div>
+            <iframe id="iframe_message" :onload="iframeLoaded" :src="messageDomain" ></iframe>
     </div>
 
    <div id="app">
-        <span class="align-middle">
-       <md-button v-on:click="sendAnswerYes" class="md-primary">Yes</md-button>
-       <md-button v-on:click="sendAnswerNo" class="md-primary">No</md-button>
+        <span>
+       <md-button v-on:click="sendAnswerYes" class="btn btn-primary btn-lg">Yes</md-button>
+       <md-button v-on:click="sendAnswerNo" class="btn btn-primary btn-lg">No</md-button>
+       <md-button v-on:click="sendAnswerSkip" class="btn btn-primary btn-lg">Skip</md-button>
         </span>
     </div>
 
 </div>
-<script type="text/javascript">
-  function iframeLoaded() {
-      var iFrameID = document.getElementById('idIframe');
-      if(iFrameID) {
-            iFrameID.height = "";
-            iFrameID.width = "";
-            var width = 1000;
-          var scrollWidth = iFrameID.contentWindow.document.body.scrollWidth;
-          if(scrollWidth> width){
-              width = scrollWidth;
-          }
-          iFrameID.height = iFrameID.contentWindow.document.body.scrollHeight + "px";
-          iFrameID.width = width + "px";
-            console.log("new i frame loaded!!")
-      }
-  }
-</script>
+    </div>
     <script>
+
       Vue.use(VueMaterial.default);
+
         var message_element_view = new Vue({
             el: '#message_content',
             data: {
                 title: 'Is this Message Receipt?',
                 messageDomain: 'https://getbootstrap.com'
+            },
+            mounted: function(){
+                this.iframeLoaded();
+            },
+            methods: {
+                iframeLoaded: function () {
+                  var iFrameID = document.getElementById('iframe_message');
+                  if(iFrameID) {
+                        iFrameID.height = "";
+                        iFrameID.width = "";
+                        var width = 1000;
+                      var scrollWidth = iFrameID.contentWindow.document.body.scrollWidth;
+                      if(scrollWidth> width){
+                          width = scrollWidth;
+                      }
+                      iFrameID.height = iFrameID.contentWindow.document.body.scrollHeight + 500+ "px";
+                      iFrameID.width = width + "px";
+                        console.log("new i frame loaded!! ="+iFrameID.height)
+                  }
+                }
             }
         });
 
@@ -66,19 +70,22 @@
                             // TODO send answer message_id + yes/no
                             // TODO load next message get next iframe to display
                             console.log("answered yes");
-                        this.displayNextMessage();
+                            this.displayNextMessage();
                         },
                         sendAnswerNo: function () {
                             console.log("answered no");
                             this.displayNextMessage();
                         },
+                        sendAnswerSkip: function (){
+                            console.log("answered skip");
+                            this.displayNextMessage();
+                        },
                         displayNextMessage: function (){
                             console.log("loading next message...");
-                            message_element_view.messageDomain += 'https://vuejs.org';
+                            message_element_view.messageDomain = 'https://vuejs.org';
                         }
                     }
       });
-
     </script>
 </body>
 </html>
