@@ -23,9 +23,9 @@
 
    <div id="app">
         <span>
-       <md-button v-on:click="sendAnswerYes" class="btn btn-primary btn-lg">Yes</md-button>
-       <md-button v-on:click="sendAnswerNo" class="btn btn-primary btn-lg">No</md-button>
-       <md-button v-on:click="sendAnswerSkip" class="btn btn-primary btn-lg">Skip</md-button>
+       <md-button v-on:click="sendAnswerYes" class="btn btn-success btn-lg">Yes</md-button>
+       <md-button v-on:click="sendAnswerNo" class="btn btn-danger btn-lg">No</md-button>
+       <md-button v-on:click="sendAnswerSkip" class="btn btn-secondary btn-lg">Skip</md-button>
         </span>
     </div>
 
@@ -70,18 +70,18 @@
                             // TODO send answer message_id + yes/no
                             // TODO load next message get next iframe to display
                             console.log("answered yes");
-                            this.displayNextMessage();
+                            this.handelingNextMessage(1);
                         },
                         sendAnswerNo: function () {
                             console.log("answered no");
-                            this.displayNextMessage();
+                            this.handelingNextMessage(0);
                         },
                         sendAnswerSkip: function (){
                             console.log("answered skip");
-                            this.displayNextMessage();
+                            this.handelingNextMessage(null);
                         },
-                        displayNextMessage: function (){
-                            console.log("loading next message...");
+                        handelingNextMessage: function (answer){
+                            console.log("loading next message..."+answer);
                             message_element_view.messageDomain = 'https://vuejs.org';
                         }
                     }
