@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
-    return send_from_directory('client', 'index.html')
+    return send_from_directory('web_client', 'index.html')
 
 
 if __name__ == '__main__':
