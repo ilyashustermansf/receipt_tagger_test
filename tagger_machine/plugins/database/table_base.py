@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import pandas as pd
 from datetime import datetime
+
+from plugins.database.sql_alchemy_session import SqlAlchemySession
 from tagger_machine.plugins.database.db_sql_alchemy import DbSqlAlchemy
 
 
@@ -25,3 +27,7 @@ class TableBase(object):
                           index=False)
         db.disconnect()
         return data_frame
+
+    def get_session(self):
+        session = SqlAlchemySession.get_session()
+        return session.db.session
