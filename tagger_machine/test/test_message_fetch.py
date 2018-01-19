@@ -56,12 +56,16 @@ class TestMessageFetch(TestCase):
                              .format(message_id))
 
     def test_get_new_messages_with_changed_count(self):
-        messages_updated = [{'id': 2698406951}, {'id': 2698406952},
+        tagged_messages = [{'id': 2698406951}, {'id': 2698406952},
                             {'id': 2698406953},
                             {'id': 2698406954}, {'id': 2698407037},
                             {'id': 2577499155}, {'id': 2577499203},
                             {'id': 2698406966},
                             {'id': 2698406967}, {'id': 2698407206}]
-        messages_updated = [msg['id'] for msg in messages_updated]
-        messages = self.message_handler.get_next_messages(messages_updated)
-        checked_messages
+        messages_updated = [msg['id'] for msg in tagged_messages]
+        next_messages = [msg['id'] for msg in
+                         self.message_handler.get_next_messages(
+                             messages_updated)]
+        zero_messages = [msg_id for msg_id in next_messages
+                         if msg_id in next_messages]
+        self.assertTrue(len(zero_messages) == 0)
