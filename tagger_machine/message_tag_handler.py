@@ -33,7 +33,6 @@ class MessagesTagHandler(object):
 
     def get_next_messages(self, messages_updated):
         messages_updated = [msg['id'] for msg in messages_updated]
-        print(messages_updated)
         return self.message_table.get_messages_not_in(messages_updated,
                                                       self.messages_limit)
 
