@@ -6,24 +6,21 @@ from tagger_machine.message_tag_handler import MessagesTagHandler
 class TestMessageFetch(TestCase):
 
     def setUp(self):
-        self.message_handler = MessagesTagHandler()
+
+        self.message_handler = MessagesTagHandler(messages_limit=50)
         self.tags = [{'message_id': 1222, 'is_receipt': False},
                      {'message_id': 2525, 'is_receipt': True}]
 
     def test_load_fifty_messages(self):
-        messages = self.message_handler.load_messages(messages_amount=50,
-                                                      offset=2)
+        messages = self.message_handler.load_messages(offset=2)
         self.assertTrue(len(messages) == 50, msg=messages)
 
     @skip
     def test_offset_messages_from_database(self):
-        dummy_amount = 2
         message_offset_one = \
-            self.message_handler.load_messages(messages_amount=dummy_amount,
-                                               offset=1)[1]
+            self.message_handler.load_messages(offset=1)[1]
         message_offset_two = \
-            self.message_handler.load_messages(messages_amount=dummy_amount,
-                                               offset=2)[0]
+            self.message_handler.load_messages(offset=2)[0]
         self.assertEqual(message_offset_one['id'], message_offset_two['id'])
 
     @skip
@@ -62,10 +59,9 @@ class TestMessageFetch(TestCase):
                             {'id': 2577499155}, {'id': 2577499203},
                             {'id': 2698406966},
                             {'id': 2698406967}, {'id': 2698407206}]
-        messages_updated = [msg['id'] for msg in tagged_messages]
         next_messages = [msg['id'] for msg in
                          self.message_handler.get_next_messages(
-                             messages_updated)]
+                             tagged_messages)]
         zero_messages = [msg_id for msg_id in next_messages
-                         if msg_id in next_messages]
-        self.assertTrue(len(zero_messages) == 0)
+                         if msg_id in tagged_messages]
+        self.assertTrue(len(zero_messages) == 0, zero_messages)

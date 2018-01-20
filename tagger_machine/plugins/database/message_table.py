@@ -17,10 +17,10 @@ class MessageTable(TableBase):
             offset)
         return self.dictify_messages(messages)
 
-    def get_messages_not_in(self, messages_updated):
+    def get_messages_not_in(self, messages_updated, limit):
         db_session = self.get_session()
         messages = db_session.query(Message).\
-            filter(~Message.id.in_(messages_updated))
+            filter(~Message.id.in_(messages_updated)).limit(limit)
         return self.dictify_messages(messages)
 
     def dictify_messages(self, messages):
