@@ -1,11 +1,12 @@
 from unittest import TestCase, skip
-import numpy as np
+import os
 from tagger_machine.message_tag_handler import MessagesTagHandler
 
 
 class TestMessageFetch(TestCase):
 
     def setUp(self):
+        os.environ.setdefault('MESSAGE_DATABASE_MOCK', 'TRUE')
         self.message_handler = MessagesTagHandler(messages_limit=50)
         self.tags = [{'message_id': 1222, 'is_receipt': False},
                      {'message_id': 2525, 'is_receipt': True}]
@@ -16,12 +17,12 @@ class TestMessageFetch(TestCase):
                          {'id': 2698406966},
                          {'id': 2698406967}, {'id': 2698407206}]
 
-    @skip
     def test_load_fifty_messages(self):
-        messages = self.message_handler.load_messages(offset=2)
+        self.message_handler.messages_limit = 50
+        messages = self.message_handler.load_messages(offset=1)
         self.assertTrue(len(messages) == 50, msg=messages)
 
-    @skip
+
     def test_offset_messages_from_database(self):
         message_offset_one = \
             self.message_handler.load_messages(offset=1)[1]
@@ -29,11 +30,10 @@ class TestMessageFetch(TestCase):
             self.message_handler.load_messages(offset=2)[0]
         self.assertEqual(message_offset_one['id'], message_offset_two['id'])
 
-    @skip
     def test_delete_tags(self):
         self.message_handler.delete_tags(self.tags)
 
-    @skip
+
     def test_add_two_answers_and_delete(self):
         tag = self.tags[0]
         tag2 = self.tags[1]
@@ -59,7 +59,6 @@ class TestMessageFetch(TestCase):
                              .format(message['id']))
             self.assertTrue('id' in message_with_url)
 
-    @skip
     def test_get_next_messages_from_already_tagged_messages(self):
         tagged_messages = self.messages
         next_messages = [msg['id'] for msg in

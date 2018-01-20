@@ -17,7 +17,8 @@ class MessageTagTable(TableBase):
         db_session = self.get_session()
         tags = db_session.query(MessageTag).limit(limit)
         return [
-            {'message_id': tag.message_id}
+            {'message_id': tag.message_id,
+             'is_receipt': tag.is_receipt}
             for tag in tags
         ]
 

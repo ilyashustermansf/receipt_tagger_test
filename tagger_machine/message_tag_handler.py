@@ -1,5 +1,4 @@
-from plugins.database.message_table import MessageTable
-from plugins.database.message_tag_table import MessageTagTable
+from message_table_factory import MessageTableFactory
 
 
 class MessagesTagHandler(object):
@@ -7,18 +6,21 @@ class MessagesTagHandler(object):
 
     def __init__(self, messages_limit):
         self.messages_limit = messages_limit
+        table_factory = MessageTableFactory()
+        self.message_table = table_factory.get_message_table()
+        self.message_tag_table = table_factory.get_message_tag_table()
 
     def load_messages(self, offset):
-        return MessageTable().get_messages(self.messages_limit, offset)
+        return self.message_table.get_messages(self.messages_limit, offset)
 
     def add_tags(self, tags):
-        MessageTagTable().insert_tags(tags)
+        self.message_tag_table.insert_tags(tags)
 
     def get_tags(self, limit):
-        return MessageTagTable().get_messages_tags(limit)
+        return self.message_tag_table.get_messages_tags(limit)
 
     def delete_tags(self, tags):
-        MessageTagTable().delete_tags(tags)
+        self.message_tag_table.delete_tags(tags)
 
     def get_url(self, message_id):
         return '{}{}'.format(self.URL, message_id)
@@ -31,7 +33,11 @@ class MessagesTagHandler(object):
 
     def get_next_messages(self, messages_updated):
         messages_updated = [msg['id'] for msg in messages_updated]
-        return MessageTable().get_messages_not_in(messages_updated,
-                                                  self.messages_limit)
+        print(messages_updated)
+        return self.message_table.get_messages_not_in(messages_updated,
+                                                      self.messages_limit)
 
-
+# if __name__ == '__main__':
+#     messages = MessageTable().get_messages(200, 0)
+#     with open('messages.json', 'w') as f:
+#         json.dump({'messages': messages}, f)
