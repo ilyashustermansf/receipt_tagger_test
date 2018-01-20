@@ -52,7 +52,7 @@ class TestMessageFetch(TestCase):
                              'https://files.superfly.com/files/?msg_id={}'
                              .format(message_id))
 
-    def test_get_next_messages_with_tagged_messages(self):
+    def test_get_next_messages_from_already_tagged_messages(self):
         tagged_messages = [{'id': 2698406951}, {'id': 2698406952},
                             {'id': 2698406953},
                             {'id': 2698406954}, {'id': 2698407037},
