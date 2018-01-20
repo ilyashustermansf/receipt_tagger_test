@@ -37,7 +37,3 @@ class MessagesTagHandler(object):
         return self.message_table.get_messages_not_in(messages_updated,
                                                       self.messages_limit)
 
-# if __name__ == '__main__':
-#     messages = MessageTable().get_messages(200, 0)
-#     with open('messages.json', 'w') as f:
-#         json.dump({'messages': messages}, f)
