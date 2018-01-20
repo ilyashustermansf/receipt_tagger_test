@@ -6,11 +6,17 @@ from tagger_machine.message_tag_handler import MessagesTagHandler
 class TestMessageFetch(TestCase):
 
     def setUp(self):
-
         self.message_handler = MessagesTagHandler(messages_limit=50)
         self.tags = [{'message_id': 1222, 'is_receipt': False},
                      {'message_id': 2525, 'is_receipt': True}]
+        self.messages = [{'id': 2698406951}, {'id': 2698406952},
+                         {'id': 2698406953},
+                         {'id': 2698406954}, {'id': 2698407037},
+                         {'id': 2577499155}, {'id': 2577499203},
+                         {'id': 2698406966},
+                         {'id': 2698406967}, {'id': 2698407206}]
 
+    @skip
     def test_load_fifty_messages(self):
         messages = self.message_handler.load_messages(offset=2)
         self.assertTrue(len(messages) == 50, msg=messages)
@@ -45,20 +51,17 @@ class TestMessageFetch(TestCase):
                          .format(message_id))
 
     def test_get_messages_urls(self):
-        messages = np.arange(10, 100, 10)
-        url_messages = self.message_handler.add_urls(messages)
-        for message_id, message_url in zip(messages, url_messages):
-            self.assertEqual(message_url['url'],
+        messages_with_urls = self.message_handler.add_urls(self.messages)
+        for message, message_with_url in zip(self.messages,
+                                             messages_with_urls):
+            self.assertEqual(message_with_url['url'],
                              'https://files.superfly.com/files/?msg_id={}'
-                             .format(message_id))
+                             .format(message['id']))
+            self.assertTrue('id' in message_with_url)
 
+    @skip
     def test_get_next_messages_from_already_tagged_messages(self):
-        tagged_messages = [{'id': 2698406951}, {'id': 2698406952},
-                            {'id': 2698406953},
-                            {'id': 2698406954}, {'id': 2698407037},
-                            {'id': 2577499155}, {'id': 2577499203},
-                            {'id': 2698406966},
-                            {'id': 2698406967}, {'id': 2698407206}]
+        tagged_messages = self.messages
         next_messages = [msg['id'] for msg in
                          self.message_handler.get_next_messages(
                              tagged_messages)]

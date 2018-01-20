@@ -25,9 +25,9 @@ class MessagesTagHandler(object):
 
     def add_urls(self, messages):
         return [{
-            'url': self.get_url(message_id),
-            'message_id': message_id
-        } for message_id in messages]
+            'url': self.get_url(message['id']),
+            'id': message['id']
+        } for message in messages]
 
     def get_next_messages(self, messages_updated):
         messages_updated = [msg['id'] for msg in messages_updated]
