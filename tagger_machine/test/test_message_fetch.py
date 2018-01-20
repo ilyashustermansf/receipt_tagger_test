@@ -22,7 +22,6 @@ class TestMessageFetch(TestCase):
         messages = self.message_handler.load_messages(offset=1)
         self.assertTrue(len(messages) == 50, msg=messages)
 
-
     def test_offset_messages_from_database(self):
         message_offset_one = \
             self.message_handler.load_messages(offset=1)[1]
@@ -32,7 +31,6 @@ class TestMessageFetch(TestCase):
 
     def test_delete_tags(self):
         self.message_handler.delete_tags(self.tags)
-
 
     def test_add_two_answers_and_delete(self):
         tag = self.tags[0]
