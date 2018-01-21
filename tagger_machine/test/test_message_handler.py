@@ -7,7 +7,7 @@ from tagger_machine.message_tag_handler import MessagesTagHandler
 class TestMessageHandler(TestCase):
 
     def setUp(self):
-        # os.environ.setdefault('MESSAGE_DATABASE_MOCK', 'TRUE')
+        os.environ.setdefault('MESSAGE_DATABASE_MOCK', 'TRUE')
         self.message_handler = MessagesTagHandler(messages_limit=50)
         self.tags = [{'message_id': 1222, 'is_receipt': False},
                      {'message_id': 2525, 'is_receipt': True}]
@@ -76,4 +76,10 @@ class TestMessageHandler(TestCase):
         self.assertTrue(len(messages) > 0)
         for message in messages:
             self.assertNotIn(message['id'], tag_ids)
+        self.message_handler.delete_tags(tag_ids)
+
+    def test_add_tags_that_already_exist(self):
+        self.message_handler.add_tags(self.tags)
+        tag_ids = [tag['message_id'] for tag in self.tags]
+        self.message_handler.add_tags(self.tags)
         self.message_handler.delete_tags(tag_ids)
