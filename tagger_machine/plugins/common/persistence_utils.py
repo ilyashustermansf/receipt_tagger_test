@@ -53,8 +53,10 @@ def _get_message_file_path(message_id):
 def get_operations_connection_string():
     user_name = get_environment_variable("OPERATIONS_DB_USER_NAME")
     password = get_environment_variable("OPERATIONS_DB_PASSWORD")
-    operations_connection_string = "postgresql://{}:{}@operations-db.internal.superfly.com:5432/operations".format(
-        user_name, password)
+    operations_connection_string = "postgresql://{username}:{password}" \
+                                   "@operations-db.internal.superfly.com" \
+                                   ":5432/operations".format(
+        username=user_name, password=password)
     return operations_connection_string
 
 
