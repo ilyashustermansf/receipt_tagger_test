@@ -69,7 +69,7 @@ class TestMessageHandler(TestCase):
                          if msg_id in tagged_messages]
         self.assertTrue(len(zero_messages) == 0, zero_messages)
 
-    def test_get_next_messages_after_add_messages(self):
+    def test_get_next_messages_after_add_tags(self):
         self.message_handler.add_tags(self.tags)
         tag_ids = [tag['message_id'] for tag in self.tags]
         messages = self.message_handler.get_next_messages()
