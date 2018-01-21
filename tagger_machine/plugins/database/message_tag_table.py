@@ -34,9 +34,11 @@ class MessageTagTable(TableBase):
         db_session.execute(stmt)
         db_session.commit()
 
-    def get_all_tags(self):
+    def get_tags(self, limit=None):
         db_session = self.get_session()
         tags = db_session.query(MessageTag)
+        if limit is not None:
+            tags = tags.limit(limit)
         return self.dictify_tags(tags)
 
 
