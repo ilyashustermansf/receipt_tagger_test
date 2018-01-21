@@ -1,6 +1,10 @@
 from message_table_factory import MessageTableFactory
 
 
+def rename_tage_to_message(tag):
+    return {'id': tag['message_id']}
+
+
 class MessagesTagHandler(object):
     URL = 'https://files.superfly.com/files/?msg_id='
 
@@ -31,8 +35,13 @@ class MessagesTagHandler(object):
             'id': message['id']
         } for message in messages]
 
-    def get_next_messages(self, messages_updated):
+    def get_messages_not_in(self, messages_updated):
         messages_updated = [msg['id'] for msg in messages_updated]
         return self.message_table.get_messages_not_in(messages_updated,
                                                       self.messages_limit)
+
+    def get_next_messages(self):
+        messages_tagged = self.message_tag_table.get_all_tags()
+        messages_tagged = map(rename_tage_to_message, messages_tagged)
+        return self.get_messages_not_in(messages_tagged)
 

@@ -1,5 +1,4 @@
 import pandas as pd
-from sqlalchemy import tuple_
 
 from message_tag_model import MessageTag
 from plugins.database.table_base import TableBase
@@ -16,6 +15,9 @@ class MessageTagTable(TableBase):
     def get_messages_tags(self, limit=5):
         db_session = self.get_session()
         tags = db_session.query(MessageTag).limit(limit)
+        return self.dictify_tags(tags)
+
+    def dictify_tags(self, tags):
         return [
             {'message_id': tag.message_id,
              'is_receipt': tag.is_receipt}
@@ -25,14 +27,18 @@ class MessageTagTable(TableBase):
     def insert_tags(self, tags):
         self.insert_data_frame(pd.DataFrame(tags))
 
-    def delete_tags(self, tags):
-        tag_ids = [tag['message_id'] for tag in tags]
+    def delete_tags(self, tag_ids):
+        print(tag_ids)
         db_session = self.get_session()
         stmt = MessageTag.__table__.delete()\
             .where(MessageTag.message_id.in_(tag_ids))
         db_session.execute(stmt)
         db_session.commit()
 
+    def get_all_tags(self):
+        db_session = self.get_session()
+        tags = db_session.query(MessageTag)
+        return self.dictify_tags(tags)
 
 if __name__ == '__main__':
     MessageTagTable().delete_tags([

@@ -20,7 +20,9 @@ class MessageTagTableMock(object):
     def insert_tags(self, tags):
         self.tag_messages += tags
 
-    def delete_tags(self, tags):
-        tag_ids = [tag['message_id'] for tag in tags]
+    def delete_tags(self, tag_ids):
         self.tag_messages = [tag for tag in self.tag_messages if
                              tag['message_id'] not in tag_ids]
+
+    def get_all_tags(self):
+        return self.tag_messages

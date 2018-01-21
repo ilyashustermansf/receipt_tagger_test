@@ -1,12 +1,13 @@
+import copy
 from unittest import TestCase, skip
 import os
 from tagger_machine.message_tag_handler import MessagesTagHandler
 
 
-class TestMessageFetch(TestCase):
+class TestMessageHandler(TestCase):
 
     def setUp(self):
-        os.environ.setdefault('MESSAGE_DATABASE_MOCK', 'TRUE')
+        # os.environ.setdefault('MESSAGE_DATABASE_MOCK', 'TRUE')
         self.message_handler = MessagesTagHandler(messages_limit=50)
         self.tags = [{'message_id': 1222, 'is_receipt': False},
                      {'message_id': 2525, 'is_receipt': True}]
@@ -30,7 +31,8 @@ class TestMessageFetch(TestCase):
         self.assertEqual(message_offset_one['id'], message_offset_two['id'])
 
     def test_delete_tags(self):
-        self.message_handler.delete_tags(self.tags)
+        tag_ids = [tag['message_id'] for tag in self.tags]
+        self.message_handler.delete_tags(tag_ids)
 
     def test_add_two_answers_and_delete(self):
         tag = self.tags[0]
@@ -39,7 +41,8 @@ class TestMessageFetch(TestCase):
         tags = self.message_handler.get_tags(limit=2)
         self.assertEqual(tags[0]['message_id'], tag['message_id'])
         self.assertEqual(tags[1]['message_id'], tag2['message_id'])
-        self.message_handler.delete_tags([tag, tag2])
+        self.message_handler.delete_tags([tag['message_id'],
+                                          tag2['message_id']])
 
     def test_get_message_url(self):
         message_id = 1234
@@ -60,8 +63,17 @@ class TestMessageFetch(TestCase):
     def test_get_next_messages_from_already_tagged_messages(self):
         tagged_messages = self.messages
         next_messages = [msg['id'] for msg in
-                         self.message_handler.get_next_messages(
+                         self.message_handler.get_messages_not_in(
                              tagged_messages)]
         zero_messages = [msg_id for msg_id in next_messages
                          if msg_id in tagged_messages]
         self.assertTrue(len(zero_messages) == 0, zero_messages)
+
+    def test_get_next_messages_after_add_messages(self):
+        self.message_handler.add_tags(self.tags)
+        tag_ids = [tag['message_id'] for tag in self.tags]
+        messages = self.message_handler.get_next_messages()
+        self.assertTrue(len(messages) > 0)
+        for message in messages:
+            self.assertNotIn(message['id'], tag_ids)
+        self.message_handler.delete_tags(tag_ids)
