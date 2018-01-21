@@ -14,7 +14,7 @@ class MessageTagTableMock(object):
         filename = Path(Path(__file__).parent, 'tag_messages.json')
         self.tag_messages = get_messages_from_file(filename)
 
-    def get_messages_tags(self, limit=5):
+    def get_messages_tags(self, limit):
         return self.tag_messages[:limit]
 
     def insert_tags(self, tags):

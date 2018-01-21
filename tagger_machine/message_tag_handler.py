@@ -18,10 +18,16 @@ class MessagesTagHandler(object):
         return self.message_table.get_messages(self.messages_limit, offset)
 
     def add_tags(self, tags):
+        all_tags = [tag['message_id'] for tag
+                    in self.get_tags()]
+        tags = [tag for tag in tags if tag['message_id'] not in all_tags]
         self.message_tag_table.insert_tags(tags)
 
-    def get_tags(self, limit):
-        return self.message_tag_table.get_messages_tags(limit)
+    def get_tags(self, limit=None):
+        if limit is None:
+            return self.message_tag_table.get_all_tags()
+        else:
+            return self.message_tag_table.get_messages_tags(limit)
 
     def delete_tags(self, tags):
         self.message_tag_table.delete_tags(tags)
