@@ -1,4 +1,3 @@
-import copy
 from unittest import TestCase, skip
 import os
 from tagger_machine.message_tag_handler import MessagesTagHandler
@@ -7,7 +6,7 @@ from tagger_machine.message_tag_handler import MessagesTagHandler
 class TestMessageHandler(TestCase):
 
     def setUp(self):
-        # os.environ.setdefault('MESSAGE_DATABASE_MOCK', 'TRUE')
+        os.environ.setdefault('MESSAGE_DATABASE_MOCK', 'TRUE')
         self.message_handler = MessagesTagHandler(messages_limit=50)
         self.tags = [{'message_id': 1222, 'is_receipt': False},
                      {'message_id': 2525, 'is_receipt': True}]

@@ -28,9 +28,8 @@ class MessageTagTable(TableBase):
         self.insert_data_frame(pd.DataFrame(tags))
 
     def delete_tags(self, tag_ids):
-        print(tag_ids)
         db_session = self.get_session()
-        stmt = MessageTag.__table__.delete()\
+        stmt = MessageTag.__table__.delete() \
             .where(MessageTag.message_id.in_(tag_ids))
         db_session.execute(stmt)
         db_session.commit()
@@ -39,6 +38,7 @@ class MessageTagTable(TableBase):
         db_session = self.get_session()
         tags = db_session.query(MessageTag)
         return self.dictify_tags(tags)
+
 
 if __name__ == '__main__':
     MessageTagTable().delete_tags([
