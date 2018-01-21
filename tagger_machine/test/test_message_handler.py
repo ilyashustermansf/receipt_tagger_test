@@ -1,3 +1,4 @@
+import logging
 from unittest import TestCase, skip
 import os
 from tagger_machine.message_tag_handler import MessagesTagHandler
@@ -16,6 +17,7 @@ class TestMessageHandler(TestCase):
                          {'id': 2577499155}, {'id': 2577499203},
                          {'id': 2698406966},
                          {'id': 2698406967}, {'id': 2698407206}]
+        logging.basicConfig(format=logging.INFO)
 
     def test_load_fifty_messages(self):
         self.message_handler.messages_limit = 50

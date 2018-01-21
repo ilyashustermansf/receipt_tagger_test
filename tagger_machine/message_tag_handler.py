@@ -12,6 +12,7 @@ class MessagesTagHandler(object):
     logging.basicConfig(format=logging.INFO)
 
     def __init__(self, messages_limit):
+        logging.info('Initiating Tag ')
         self.messages_limit = messages_limit
         table_factory = MessageTableFactory()
         self.message_table = table_factory.get_message_table()
@@ -49,18 +50,24 @@ class MessagesTagHandler(object):
         return '{}{}'.format(self.URL, message_id)
 
     def add_urls(self, messages):
-        return [
+        messages_with_urls = [
             {
                 'url': self.get_url(message['id']),
                 'id': message['id']
             } for message in messages]
+        logging.info('Adding urls to messages={}'.format(messages_with_urls))
+        return messages_with_urls
 
     def get_messages_not_in(self, messages_updated):
+        logging.info('Get Messages not in ={}'.format(messages_updated))
         messages_updated = [msg['id'] for msg in messages_updated]
         return self.message_table.get_messages_not_in(messages_updated,
                                                       self.messages_limit)
 
     def get_next_messages(self):
+        logging.info('Get Next messages...')
         messages_tagged = self.message_tag_table.get_all_tags()
         messages_tagged = map(rename_tage_to_message, messages_tagged)
-        return self.get_messages_not_in(messages_tagged)
+        next_messages = self.get_messages_not_in(messages_tagged)
+        logging.info('Loaded next messages={}'.format(next_messages))
+        return next_messages
