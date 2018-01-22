@@ -5,12 +5,16 @@ from database.db_sql_alchemy import DbSqlAlchemy
 
 class SqlAlchemySession(object):
     _cached_session = None
-
+    _cached_sessions = {
+        'operations': None,
+        'default': None
+    }
     @classmethod
     def get_session(cls, connection_name):
-        if not cls._cached_session:
-            cls._cached_session = SqlAlchemySession(connection_name)
-        return cls._cached_session
+        assert connection_name in cls._cached_sessions.keys()
+        if not cls._cached_sessions[connection_name]:
+            cls._cached_sessions[connection_name] = SqlAlchemySession(connection_name)
+        return cls._cached_sessions[connection_name]
 
     def __init__(self, connection_name):
         self.db = DbSqlAlchemy()
