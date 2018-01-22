@@ -1,6 +1,7 @@
 import os
 
 
+# TODO fix the name here
 class ConfigureableTestModeMixin:
     def __init__(self, env_variable_name=None, is_test_mode=None):
         """

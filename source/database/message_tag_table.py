@@ -1,11 +1,12 @@
 import pandas as pd
 
+from database.table_base import TableBase
 from message_tag_model import MessageTag
-from plugins.database.table_base import TableBase
 
 
 class MessageTagTable(TableBase):
-    TABLE_NAME = 'message_tag'
+    TABLE_NAME = 'message_tags'
+    schema = 'operations'
     COLUMNS = ['message_id', 'is_receipt']
 
     def __init__(self):

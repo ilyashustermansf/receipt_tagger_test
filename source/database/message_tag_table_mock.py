@@ -1,18 +1,8 @@
-import json
-from unipath import Path
-
-
-def get_messages_from_file(filename):
-    with open(filename, 'r') as f:
-        tag_messages = json.load(f)['tag_messages']
-        return tag_messages
-
 
 class MessageTagTableMock(object):
 
     def __init__(self):
-        filename = Path(Path(__file__).parent, 'tag_messages.json')
-        self.tag_messages = get_messages_from_file(filename)
+        self.tag_messages = []
 
     def get_messages_tags(self, limit):
         return self.tag_messages[:limit]

@@ -1,6 +1,5 @@
+from database.table_base import TableBase
 from message_model import Message
-from plugins.database.sql_alchemy_session import SqlAlchemySession
-from plugins.database.table_base import TableBase
 
 
 class MessageTable(TableBase):
@@ -19,7 +18,7 @@ class MessageTable(TableBase):
 
     def get_messages_not_in(self, messages_updated, limit):
         db_session = self.get_session()
-        messages = db_session.query(Message).\
+        messages = db_session.query(Message). \
             filter(~Message.id.in_(messages_updated)).limit(limit)
         return self.dictify_messages(messages)
 

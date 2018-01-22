@@ -1,10 +1,10 @@
 import logging
 
 from message_table_factory import MessageTableFactory
-from plugins.common.persistence_utils import get_message_content
+from common.persistence_utils import get_message_content
 
 
-def rename_tage_to_message(tag):
+def change_tag_to_message_dict(tag):
     return {'id': tag['message_id']}
 
 
@@ -68,7 +68,7 @@ class MessagesTagHandler(object):
     def get_next_messages(self):
         logging.info('Get Next messages...')
         messages_tagged = self.message_tag_table.get_all_tags()
-        messages_tagged = map(rename_tage_to_message, messages_tagged)
+        messages_tagged = map(change_tag_to_message_dict, messages_tagged)
         next_messages = self.get_messages_not_in(messages_tagged)
         logging.info('Loaded next messages={}'.format(next_messages))
         return next_messages

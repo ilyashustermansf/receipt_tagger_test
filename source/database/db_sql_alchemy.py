@@ -4,7 +4,7 @@ import logging
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker
 
-from tagger_machine.plugins.database.dbsettings import DATABASES
+from database.dbsettings import DATABASES
 
 
 class DbSqlAlchemy(object):
@@ -15,8 +15,7 @@ class DbSqlAlchemy(object):
         self._session = None
         self._sessionmaker = None
 
-    def connect(self):
-        connection_name = 'default'
+    def connect(self, connection_name='default'):
         config = DATABASES[connection_name]
         url = 'postgresql://{username}:{password}@{host}:{port}/{db}' \
             .format(username=config['USER'],

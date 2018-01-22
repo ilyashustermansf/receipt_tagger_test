@@ -1,8 +1,7 @@
 import logging
-from unittest import TestCase, skip
+from unittest import TestCase
 import os
-from unipath import Path
-from tagger_machine.message_tag_handler import MessagesTagHandler
+from source.message_tag_handler import MessagesTagHandler
 
 MESSAGES_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                              'messages'))

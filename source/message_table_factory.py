@@ -1,8 +1,9 @@
-from plugins.database.message_table import MessageTable
-from plugins.database.message_table_mock import MessageTableMock
-from plugins.database.message_tag_table import MessageTagTable
-from plugins.database.message_tag_table_mock import MessageTagTableMock
-from testing.configureable_test_mode_mixing import ConfigureableTestModeMixin
+
+from configureable_test_mode_mixing import ConfigureableTestModeMixin
+from database.message_table import MessageTable
+from database.message_table_mock import MessageTableMock
+from database.message_tag_table import MessageTagTable
+from database.message_tag_table_mock import MessageTagTableMock
 
 
 class MessageTableFactory(ConfigureableTestModeMixin):

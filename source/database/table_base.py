@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 import pandas as pd
-from datetime import datetime
 
-from plugins.database.sql_alchemy_session import SqlAlchemySession
-from tagger_machine.plugins.database.db_sql_alchemy import DbSqlAlchemy
+from database.db_sql_alchemy import DbSqlAlchemy
+from database.sql_alchemy_session import SqlAlchemySession
 
 
 class TableBase(object):
     """
     Base class for MySQL table implementations.
     """
+    schema = 'default'
 
     def __init__(self, table_name, columns):
         self.table_name = table_name
@@ -29,5 +29,5 @@ class TableBase(object):
         return data_frame
 
     def get_session(self):
-        session = SqlAlchemySession.get_session()
+        session = SqlAlchemySession.get_session(self.schema)
         return session.db.session
