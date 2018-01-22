@@ -1,6 +1,7 @@
 import logging
 
 from message_table_factory import MessageTableFactory
+from plugins.common.persistence_utils import get_message_content
 
 
 def rename_tage_to_message(tag):
@@ -71,3 +72,6 @@ class MessagesTagHandler(object):
         next_messages = self.get_messages_not_in(messages_tagged)
         logging.info('Loaded next messages={}'.format(next_messages))
         return next_messages
+
+    def get_html_content(self, message_id):
+        return get_message_content(message_id)

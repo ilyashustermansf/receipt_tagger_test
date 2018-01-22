@@ -16,5 +16,5 @@ class ConfigureableTestModeMixin:
             self.is_test_mode = is_test_mode
         elif env_variable_name is not None:
             self.is_test_mode = bool(os.environ.get(
-                env_variable_name))
+                env_variable_name)=='TRUE')
 

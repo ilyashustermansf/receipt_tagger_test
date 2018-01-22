@@ -1,13 +1,23 @@
 import logging
 from unittest import TestCase, skip
 import os
+from unipath import Path
 from tagger_machine.message_tag_handler import MessagesTagHandler
+
+MESSAGES_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                             'messages'))
 
 
 class TestMessageHandler(TestCase):
 
+    @classmethod
+    def get_html_content(cls, message_id):
+        with open('{}/{}.html'.format(MESSAGES_PATH, message_id)) as f:
+            return f.read()
+
     def setUp(self):
         os.environ.setdefault('MESSAGE_DATABASE_MOCK', 'TRUE')
+        os.environ.setdefault('TEST_DIRECTORY_ENV', 'True')
         self.message_handler = MessagesTagHandler(messages_limit=50)
         self.tags = [{'message_id': 2698406951, 'is_receipt': False},
                      {'message_id': 2698406953, 'is_receipt': True}]
@@ -17,6 +27,7 @@ class TestMessageHandler(TestCase):
                          {'id': 2577499155}, {'id': 2577499203},
                          {'id': 2698406966},
                          {'id': 2698406967}, {'id': 2698407206}]
+        self.html = self.get_html_content(message_id=2698406951)
         logging.basicConfig(format=logging.INFO)
 
     def test_load_fifty_messages(self):
@@ -86,3 +97,8 @@ class TestMessageHandler(TestCase):
         self.message_handler.add_tags(self.tags)
         self.assertEqual(len(self.message_handler.get_tags()), 2)
         self.message_handler.delete_tags(tag_ids)
+
+    def test_html_content(self):
+        html_content = self.message_handler.get_html_content(
+            message_id=2698406951)
+        self.assertEqual(html_content, self.html)
