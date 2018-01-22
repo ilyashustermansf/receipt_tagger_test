@@ -41,8 +41,6 @@ class MessageTagTable(TableBase):
             tags = tags.limit(limit)
         else:
             tags = tags.all()
-
-        print(tags)
         return self.dictify_tags(tags)
 
 

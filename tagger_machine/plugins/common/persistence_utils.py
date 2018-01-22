@@ -136,4 +136,4 @@ class utf8_open:
 
 
 if __name__ == '__main__':
-    print(get_message_content(2698407037))
+    print(_get_message_file_path(2698407037))

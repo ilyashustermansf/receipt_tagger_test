@@ -29,7 +29,10 @@
               <div class="sk-cube sk-cube8"></div>
               <div class="sk-cube sk-cube9"></div>
             </div>
-            <iframe v-else="loading" id="iframe_message" :onload="iframeLoaded" :src="messageDomain" ></iframe>
+            <!--<iframe v-else="loading" id="iframe_message" :onload="iframeLoaded" :src="messageDomain" >-->
+            <iframe v-else="loading" id="iframe_message" :onload="iframeLoaded" >
+                {{messageContent}}
+            </iframe>
 
     </div>
 
@@ -61,9 +64,11 @@
                 loading: false,
                 title: 'Is this Message Receipt?',
                 messageDomain: '',
-                messageId: null
+                messageId: null,
+                messageContent: ''
             },
             mounted: function(){
+                localStorage.setItem('tags', JSON.stringify([]));
                 this.iframeLoaded();
                 this.initiateMessages();
             },
@@ -119,19 +124,20 @@
                         this.initiateMessages();
                         count = 0;
                     }
-                    this.messageId = messages[count]['id'];
+                    var message = messages[count];
+                    this.messageId = message['id'];
                     var url = getMessageUrl(this.messageId);
                     incrementMessageCount(count);
                     this.iframeLoaded();
-                    return url
+                    return {url : url, content: message['content']}
                 },
                 insertTagsIfExist: function () {
                     var tags = JSON.parse(localStorage.getItem('tags'));
                     if (tags !== null && tags.length > 0){
                         axios.post('/add_tags', tags)
                           .then(function (response) {
-                            // console.log(response);
                             console.log(response.status+' OK! got tags='+tags);
+                            localStorage.setItem('tags', JSON.stringify([]));
                           })
                           .catch(function (error) {
                             console.log(error);
@@ -168,7 +174,9 @@
                                 this.insertTag(answer);
                             }
                             console.log("loading next message..."+answer);
-                            message_element_view.messageDomain = message_element_view.getNextMessage();
+                            var nextMessage = message_element_view.getNextMessage();
+                            message_element_view.messageDomain = nextMessage['url'];
+                            message_element_view.messageContent = JSON.stringify(nextMessage['content']);
                         },
                         prepareTag: function (answer, messageId) {
                             return {'message_id': messageId,
