@@ -15,7 +15,7 @@ class TestMessageHandler(TestCase):
             return f.read()
 
     def setUp(self):
-        # os.environ.setdefault('MESSAGE_DATABASE_MOCK', 'TRUE')
+        os.environ.setdefault('MESSAGE_DATABASE_MOCK', 'TRUE')
         os.environ.setdefault('TEST_DIRECTORY_ENV', 'True')
         self.message_handler = MessagesTagHandler(messages_limit=50)
         self.tags = [{'message_id': 2698406951, 'is_receipt': False},
