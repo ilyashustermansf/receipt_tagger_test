@@ -3,7 +3,6 @@ import logging
 import os
 import tornado.ioloop
 import tornado.web
-from tornado_json import schema
 
 from message_tag_handler import MessagesTagHandler
 
@@ -30,16 +29,6 @@ class MainHandler(tornado.web.RequestHandler):
 
 class MessageHandler(tornado.web.RequestHandler):
 
-    @classmethod
-    def setup(cls):
-        logging.basicConfig(level=logging.WARNING)
-        logger = logging.getLogger('tagger_machine')
-        logger.propagate = False
-        logger.setLevel(logging.WARNING)
-        handler = logging.StreamHandler()
-        logger.addHandler(handler)
-        return logger
-
     def initialize(self, message_tag_table):
         self.message_tag_handler = message_tag_table
 
@@ -48,7 +37,7 @@ class MessageFetchHandler(MessageHandler):
 
     def get(self):
         messages = self.message_tag_handler.get_next_messages()
-        self.write(json.dumps([{'id': 1234}, {'id': 1235}]))
+        self.write(json.dumps(messages))
 
 
 class AddTagsHandler(MessageHandler):
@@ -59,7 +48,7 @@ class AddTagsHandler(MessageHandler):
 
 
 def make_app():
-    MessageHandler.setup()
+    logging.basicConfig(format=logging.INFO)
     message_tag_table = dict(message_tag_table=
                              MessagesTagHandler(messages_limit=50))
     handlers = [

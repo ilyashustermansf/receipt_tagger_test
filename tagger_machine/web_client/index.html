@@ -6,8 +6,10 @@
     <meta content="width=device-width,initial-scale=1,minimal-ui" name="viewport">
     <link rel="stylesheet" href="static_files/vue_default.css">
 <link rel="stylesheet" href="static_files/bootstrap.css" >
+<link rel="stylesheet" href="static_files/gadget_style.css" >
         <script src="static_files/vue.js"></script>
     <script src="static_files/vue_material.min.js"></script>
+    <script src="static_files/axios.min.js"></script>
 </head>
 <body>
 <div>
@@ -15,7 +17,20 @@
 
     <div id="message_content">
         <h1>{{title}}</h1>
-            <iframe id="iframe_message" :onload="iframeLoaded" :src="messageDomain" ></iframe>
+
+            <div v-if="loading" class="sk-cube-grid">
+              <div class="sk-cube sk-cube1"></div>
+              <div class="sk-cube sk-cube2"></div>
+              <div class="sk-cube sk-cube3"></div>
+              <div class="sk-cube sk-cube4"></div>
+              <div class="sk-cube sk-cube5"></div>
+              <div class="sk-cube sk-cube6"></div>
+              <div class="sk-cube sk-cube7"></div>
+              <div class="sk-cube sk-cube8"></div>
+              <div class="sk-cube sk-cube9"></div>
+            </div>
+            <iframe v-else="loading" id="iframe_message" :onload="iframeLoaded" :src="messageDomain" ></iframe>
+
     </div>
 
    <div id="app">
@@ -30,19 +45,26 @@
     </div>
     <script>
 
+
         function getMessageUrl(messageId) {
             return 'messages/'+messageId+'.html';
+        }
+        function incrementMessageCount(count){
+            count +=1;
+            localStorage.setItem('countMessage', count);
         }
 
       Vue.use(VueMaterial.default);
         var message_element_view = new Vue({
             el: '#message_content',
             data: {
+                loading: false,
                 title: 'Is this Message Receipt?',
-                messageDomain: getMessageUrl(2566500089)
+                messageDomain: ''
             },
             mounted: function(){
                 this.iframeLoaded();
+                this.initiateMessages();
             },
             methods: {
                 iframeLoaded: function () {
@@ -51,13 +73,55 @@
                       iFrameID.height = "";
                       iFrameID.width = "";
                       var width = 1000;
-                      var scrollWidth = iFrameID.contentWindow.document.body.scrollWidth;
-                      if(scrollWidth> width){
-                          width = scrollWidth;
+                      var height = 700;
+                      if (iFrameID.contentWindow.document.body != null){
+                            var scrollWidth = iFrameID.contentWindow.document.body.scrollWidth;
+                            var scrollHeight = iFrameID.contentWindow.document.body.scrollHeight;
+                            if(scrollWidth> width){
+                                width = scrollWidth;
+                            }
+                            if (scrollHeight> height){
+                                height = scrollHeight;
+                            }
+
                       }
-                      iFrameID.height = iFrameID.contentWindow.document.body.scrollHeight + 500+ "px";
+                      iFrameID.height = height + "px";
                       iFrameID.width = width + "px";
                   }
+                },
+                initiateMessages: function(){
+                    var self = this;
+                    console.log('Initiated!');
+                    localStorage.removeItem('messages');
+                    localStorage.removeItem('countMessage');
+                    self.loading = true;
+                    axios.get('/get_messages')
+                      .then(function (response) {
+                        localStorage.setItem('messages', JSON.stringify(response.data));
+                        localStorage.setItem('countMessage', 0);
+                        console.log('Got messages!');
+                        self.loading = false;
+                      })
+                      .catch(function (error) {
+                        console.log(error);
+                      });
+                },
+                getNextMessage: function (){
+                     var count = parseInt(localStorage.getItem('countMessage'));
+                var messages = JSON.parse(localStorage.getItem('messages'));
+
+                console.log('count='+count);
+                console.log('messages='+messages);
+                console.log('length='+messages.length);
+                if(count === messages.length){
+                    this.initiateMessages();
+                    count = 0;
+                }
+
+                var url = getMessageUrl(messages[count]['id']);
+                incrementMessageCount(count);
+                this.iframeLoaded();
+                return url
                 }
             }
         });
@@ -81,7 +145,7 @@
                         },
                         handelingNextMessage: function (answer){
                             console.log("loading next message..."+answer);
-                            message_element_view.messageDomain = getMessageUrl(2577499151);
+                            message_element_view.messageDomain = message_element_view.getNextMessage();
                         }
                     }
       });
