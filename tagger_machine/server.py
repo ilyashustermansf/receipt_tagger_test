@@ -11,6 +11,8 @@ CLIENT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                            'web_client'))
 CLIENT_STATIC = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                              'web_client/static_files'))
+MESSAGES_STATIC = os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                               'test/messages'))
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -45,7 +47,7 @@ class MessageHandler(tornado.web.RequestHandler):
 class MessageFetchHandler(MessageHandler):
 
     def get(self):
-        # messages = self.message_tag_handler.get_next_messages()
+        messages = self.message_tag_handler.get_next_messages()
         self.write(json.dumps([{'id': 1234}, {'id': 1235}]))
 
 
@@ -63,6 +65,8 @@ def make_app():
     handlers = [
         (r'/static_files/(.*)', tornado.web.StaticFileHandler,
          {'path': CLIENT_STATIC}),
+        (r'/messages/(.*)', tornado.web.StaticFileHandler,
+         {'path': MESSAGES_STATIC}),
         (r'/', MainHandler),
         (r'/get_messages', MessageFetchHandler, message_tag_table),
         (r'/add_tags', AddTagsHandler, message_tag_table),

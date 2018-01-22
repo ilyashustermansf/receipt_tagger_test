@@ -30,13 +30,16 @@
     </div>
     <script>
 
-      Vue.use(VueMaterial.default);
+        function getMessageUrl(messageId) {
+            return 'messages/'+messageId+'.html';
+        }
 
+      Vue.use(VueMaterial.default);
         var message_element_view = new Vue({
             el: '#message_content',
             data: {
                 title: 'Is this Message Receipt?',
-                messageDomain: 'https://files.superfly.com/files/?msg_id=2355164491'
+                messageDomain: getMessageUrl(2566500089)
             },
             mounted: function(){
                 this.iframeLoaded();
@@ -78,7 +81,7 @@
                         },
                         handelingNextMessage: function (answer){
                             console.log("loading next message..."+answer);
-                            message_element_view.messageDomain = 'https://vuejs.org';
+                            message_element_view.messageDomain = getMessageUrl(2577499151);
                         }
                     }
       });

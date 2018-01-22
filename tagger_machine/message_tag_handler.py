@@ -75,3 +75,9 @@ class MessagesTagHandler(object):
 
     def get_html_content(self, message_id):
         return get_message_content(message_id)
+
+    def get_next_messages_with_content(self):
+        return [{
+            'content': self.get_html_content(message['id']),
+            'id': message['id']
+        } for message in self.get_next_messages()]

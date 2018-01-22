@@ -102,3 +102,12 @@ class TestMessageHandler(TestCase):
         html_content = self.message_handler.get_html_content(
             message_id=2698406951)
         self.assertEqual(html_content, self.html)
+
+    def test_get_messages_contents(self):
+        self.message_handler.messages_limit = 10
+        messages_contents = self.message_handler\
+            .get_next_messages_with_content()
+        self.assertEqual(len(messages_contents), 10)
+        for message in messages_contents:
+            self.assertTrue('content' in message and 'id' in message)
+            self.assertEqual(message['content'], self.get_html_content(message['id']))
