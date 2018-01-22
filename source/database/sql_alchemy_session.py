@@ -4,15 +4,15 @@ from database.db_sql_alchemy import DbSqlAlchemy
 
 
 class SqlAlchemySession(object):
-    _cached_session = None
     _cached_sessions = {
         'operations': None,
         'default': None
     }
+
     @classmethod
     def get_session(cls, connection_name):
         assert connection_name in cls._cached_sessions.keys()
-        if not cls._cached_sessions[connection_name]:
+        if cls._cached_sessions[connection_name] is None:
             cls._cached_sessions[connection_name] = SqlAlchemySession(connection_name)
         return cls._cached_sessions[connection_name]
 
@@ -21,5 +21,6 @@ class SqlAlchemySession(object):
         self.db.connect(connection_name)
 
     def __del__(self):
-        self._cached_session = None
+        for key in self._cached_sessions.keys():
+            self._cached_sessions[key] = None
         self.db.disconnect()

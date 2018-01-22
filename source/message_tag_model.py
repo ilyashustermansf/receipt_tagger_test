@@ -5,7 +5,7 @@ Base = declarative_base()
 Base.metadata.schema = 'public'
 
 class MessageTag(Base):
-    __tablename__ = 'message_tag'
+    __tablename__ = 'message_tags'
 
     message_id = Column(Integer, primary_key=True)
     is_receipt = Column(Boolean)
