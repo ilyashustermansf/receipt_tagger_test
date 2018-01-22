@@ -43,8 +43,11 @@ class MessageFetchHandler(MessageHandler):
 class AddTagsHandler(MessageHandler):
 
     def post(self):
-        tags = []
-        self.message_tag_handler.add_tags(tags)
+        tags = json.loads(self.request.body)
+        if isinstance(tags, list) and len(tags) > 0:
+            if 'message_id' not in tags[0]:
+                return
+            self.message_tag_handler.add_tags(tags)
 
 
 def make_app():
