@@ -9,8 +9,8 @@ class TestMessageHandler(TestCase):
     def setUp(self):
         os.environ.setdefault('MESSAGE_DATABASE_MOCK', 'TRUE')
         self.message_handler = MessagesTagHandler(messages_limit=50)
-        self.tags = [{'message_id': 1222, 'is_receipt': False},
-                     {'message_id': 2525, 'is_receipt': True}]
+        self.tags = [{'message_id': 2698406951, 'is_receipt': False},
+                     {'message_id': 2698406953, 'is_receipt': True}]
         self.messages = [{'id': 2698406951}, {'id': 2698406952},
                          {'id': 2698406953},
                          {'id': 2698406954}, {'id': 2698407037},
@@ -81,7 +81,8 @@ class TestMessageHandler(TestCase):
 
     def test_add_tags_that_already_exist(self):
         self.message_handler.add_tags(self.tags)
+        self.assertEqual(len(self.message_handler.get_tags()), 2)
         tag_ids = [tag['message_id'] for tag in self.tags]
         self.message_handler.add_tags(self.tags)
-        self.assertTrue(len(self.message_handler.get_tags()) ==2)
+        self.assertEqual(len(self.message_handler.get_tags()), 2)
         self.message_handler.delete_tags(tag_ids)

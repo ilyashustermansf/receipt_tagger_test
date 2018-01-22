@@ -12,7 +12,7 @@ class MessagesTagHandler(object):
     logging.basicConfig(format=logging.INFO)
 
     def __init__(self, messages_limit):
-        logging.info('Initiating Tag ')
+        logging.info('Initiating Tag Handler')
         self.messages_limit = messages_limit
         table_factory = MessageTableFactory()
         self.message_table = table_factory.get_message_table()

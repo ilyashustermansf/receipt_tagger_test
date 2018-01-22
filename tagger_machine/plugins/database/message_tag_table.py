@@ -39,6 +39,10 @@ class MessageTagTable(TableBase):
         tags = db_session.query(MessageTag)
         if limit is not None:
             tags = tags.limit(limit)
+        else:
+            tags = tags.all()
+
+        print(tags)
         return self.dictify_tags(tags)
 
 

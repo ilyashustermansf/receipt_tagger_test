@@ -14,6 +14,9 @@ SQL_DIR = "sql"
 SQL_PREFIX = ".sql"
 
 STORAGE_DIR = '/mnt/efs/'
+TEST_STORAGE_DIR = '/Users/ilya/PycharmProjects/receipt_tagger/tagger_machine/test/messages/'
+
+TEST_DIRECTORY_ENV = 'TEST_DIRECTORY_ENV'
 
 
 def get_message_content(message_id):
@@ -30,7 +33,15 @@ def get_message_content(message_id):
     return decoded_message_content
 
 
+def is_test_mode():
+    return bool(os.environ.get(
+        TEST_DIRECTORY_ENV) == 'True')
+
+
 def _get_message_file_path(message_id):
+    if is_test_mode():
+        return '{}{}.html'.format(TEST_STORAGE_DIR, message_id)
+
     if not isinstance(message_id, int):
         message_id = int(message_id)
 
@@ -88,8 +99,8 @@ def get_file_path(file_name, file_dir, calling_function_increment=0):
     calling_frame = inspect.getouterframes(current_frame,
                                            CALLING_FRAME_INDEX)
     calling_file_path = \
-    calling_frame[CALLING_FUNCTION_INDEX + calling_function_increment][
-        FILE_PATH_INDEX]
+        calling_frame[CALLING_FUNCTION_INDEX + calling_function_increment][
+            FILE_PATH_INDEX]
     calling_directory_name = dirname(calling_file_path)
     file_path = join(calling_directory_name, file_dir, file_name)
     return file_path
@@ -100,8 +111,8 @@ def get_calling_file_path(calling_function_increment=0) -> str:
     calling_frame = inspect.getouterframes(current_frame,
                                            CALLING_FRAME_INDEX)
     calling_file_path = \
-    calling_frame[CALLING_FUNCTION_INDEX + calling_function_increment][
-        FILE_PATH_INDEX]
+        calling_frame[CALLING_FUNCTION_INDEX + calling_function_increment][
+            FILE_PATH_INDEX]
     return calling_file_path
 
 
@@ -125,4 +136,4 @@ class utf8_open:
 
 
 if __name__ == '__main__':
-    get_message_content(2698407037)
+    print(get_message_content(2698407037))
