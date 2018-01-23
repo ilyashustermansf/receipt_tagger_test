@@ -29,8 +29,7 @@
               <div class="sk-cube sk-cube8"></div>
               <div class="sk-cube sk-cube9"></div>
             </div>
-            <!--<iframe v-else="loading" id="iframe_message" :onload="iframeLoaded" :src="messageDomain" >-->
-            <iframe v-else="loading" id="iframe_message" :onload="iframeLoaded" :src="messageContent">
+            <iframe v-else="loading" id="iframe_message" :onload="iframeLoaded" :src="messageDomain" >
 
             </iframe>
 
@@ -50,8 +49,9 @@
 
 
       function getMessageUrl(messageId) {
-          return 'messages/'+messageId+'.html';
+          return 'messages/'+messageId;
       }
+
       function incrementMessageCount(count){
           count +=1;
           localStorage.setItem('countMessage', count);
@@ -177,7 +177,6 @@
                             console.log("loading next message..."+answer);
                             var nextMessage = message_element_view.getNextMessage();
                             message_element_view.messageDomain = nextMessage['url'];
-                            message_element_view.messageContent = nextMessage['content'];
                         },
                         prepareTag: function (answer, messageId) {
                             return {'message_id': messageId,

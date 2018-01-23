@@ -2,6 +2,7 @@ import logging
 
 from message_table_factory import MessageTableFactory
 from common.persistence_utils import get_message_content
+from common.persistence_utils import get_message_file_path
 
 
 def change_tag_to_message_dict(tag):
@@ -10,7 +11,14 @@ def change_tag_to_message_dict(tag):
 
 class MessagesTagHandler(object):
     URL = 'https://files.superfly.com/files/?msg_id='
-    logging.basicConfig(format=logging.INFO)
+
+    @classmethod
+    def get_html_content(cls, message_id):
+        return get_message_content(message_id)
+
+    @classmethod
+    def get_html_file_path(cls, message_id):
+        return get_message_file_path(message_id).split('/mnt/efs')[1][1:]
 
     def __init__(self, messages_limit):
         logging.info('Initiating Tag Handler')
@@ -72,9 +80,6 @@ class MessagesTagHandler(object):
         next_messages = self.get_messages_not_in(messages_tagged)
         logging.info('Loaded next messages={}'.format(next_messages))
         return next_messages
-
-    def get_html_content(self, message_id):
-        return get_message_content(message_id)
 
     def get_next_messages_with_content(self):
         return [{

@@ -1,7 +1,7 @@
 import os
 import requests
 
-from plugins.common.persistence_utils import _get_message_file_path
+from common.persistence_utils import get_message_file_path
 
 
 def get_url_path(message_id):
@@ -19,7 +19,7 @@ def main(messages):
 def download_and_save_file(message, message_url):
     response = requests.get(message_url)
     html = response.text
-    filename_path = _get_message_file_path(message['id']).split('/mnt/efs')[1][1:]
+    filename_path = get_message_file_path(message['id']).split('/mnt/efs')[1][1:]
     name = '{}.html'.format(message['id'] % 1000)
     directory = filename_path.split(name)[0]
     if not os.path.exists(directory):

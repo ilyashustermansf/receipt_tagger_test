@@ -1,8 +1,9 @@
 import json
-import logging
 import os
 import tornado.ioloop
 import tornado.web
+from tornado.options import parse_command_line
+
 
 from message_tag_handler import MessagesTagHandler
 
@@ -11,7 +12,7 @@ CLIENT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),
 CLIENT_STATIC = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                              'web_client/static_files'))
 MESSAGES_STATIC = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                               'test'))
+                                               'tests/efs_messages/mnt/efs'))
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -26,6 +27,15 @@ class MainHandler(tornado.web.RequestHandler):
             self.write(file.read())
 
 
+class MessagesStaticHandler(tornado.web.StaticFileHandler):
+
+    def parse_url_path(self, url_path):
+        # url_path = get_message_file_path(url_path)
+        url_path = MessagesTagHandler.get_html_file_path(url_path)
+        url_path = '{}/{}'.format(MESSAGES_STATIC, url_path)
+        return url_path
+
+
 class MessageHandler(tornado.web.RequestHandler):
 
     def initialize(self, message_tag_table):
@@ -35,7 +45,7 @@ class MessageHandler(tornado.web.RequestHandler):
 class MessageFetchHandler(MessageHandler):
 
     def get(self):
-        messages = self.message_tag_handler.get_next_messages_with_content()
+        messages = self.message_tag_handler.get_next_messages()
         self.write(json.dumps(messages))
 
 
@@ -50,13 +60,12 @@ class AddTagsHandler(MessageHandler):
 
 
 def make_app():
-    logging.basicConfig(format=logging.INFO)
     message_tag_table = dict(message_tag_table=
                              MessagesTagHandler(messages_limit=50))
     handlers = [
         (r'/static_files/(.*)', tornado.web.StaticFileHandler,
          {'path': CLIENT_STATIC}),
-        (r'/messages/(.*)', tornado.web.StaticFileHandler,
+        (r'/messages/(.*)', MessagesStaticHandler,
          {'path': MESSAGES_STATIC}),
         (r'/', MainHandler),
         (r'/get_messages', MessageFetchHandler, message_tag_table),
@@ -66,6 +75,7 @@ def make_app():
 
 
 if __name__ == '__main__':
+    parse_command_line()
     app = make_app()
     app.listen(5000)
     tornado.ioloop.IOLoop.current().start()
