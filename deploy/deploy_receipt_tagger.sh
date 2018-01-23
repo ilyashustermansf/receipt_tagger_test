@@ -1,6 +1,5 @@
 #!/bin/bash
 
-sudo -s
 cd ../
 python3.6 -m pip install -r requirements.txt
 export PYTHONPATH=$(pwd):~/common/
