@@ -23,7 +23,6 @@ class DbSqlAlchemy(object):
                     host=config['HOST'],
                     db=config['NAME'],
                     port=config['PORT'])
-        print(url)
         self.engine = sqlalchemy.create_engine(url)
         self.connection = self.engine.connect()
         self.cursor = self.connection
@@ -46,7 +45,7 @@ class DbSqlAlchemy(object):
     def __del__(self):
         # Make sure the database connection is properly closed
         if self.connection:
-            logging.info('Auto-terminating MySQL connection from __del__()')
+            logging.info('Auto-terminating Postgres connection from __del__()')
             self.connection.close()
 
 

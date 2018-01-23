@@ -17,10 +17,16 @@ class SqlAlchemySession(object):
         return cls._cached_sessions[connection_name]
 
     def __init__(self, connection_name):
+        self.connection_name = connection_name
         self.db = DbSqlAlchemy()
         self.db.connect(connection_name)
 
     def __del__(self):
-        for key in self._cached_sessions.keys():
-            self._cached_sessions[key] = None
+        self._cached_sessions[self.connection_name] = None
         self.db.disconnect()
+        # print(self.connection_name)
+        # for key in self._cached_sessions.items():
+        #     self._cached_sessions[key].db.disconnect()
+        #     if key in self._cached_sessions:
+        #         self._cached_sessions[key] = None
+        # self.db.disconnect()

@@ -6,15 +6,16 @@ from message_tag_model import MessageTag
 
 class MessageTagTable(TableBase):
     TABLE_NAME = 'message_tags'
-    schema = 'operations'
+    SCHEMA = 'operations'
     COLUMNS = ['message_id', 'is_receipt']
 
     def __init__(self):
         super(MessageTagTable, self).__init__(self.TABLE_NAME,
                                               self.COLUMNS)
+        self.db_session = self.get_session()
 
     def get_messages_tags(self, limit=5):
-        db_session = self.get_session()
+        db_session = self.db_session
         tags = db_session.query(MessageTag).limit(limit)
         return self.dictify_tags(tags)
 
@@ -29,14 +30,14 @@ class MessageTagTable(TableBase):
         self.insert_data_frame(pd.DataFrame(tags))
 
     def delete_tags(self, tag_ids):
-        db_session = self.get_session()
+        db_session = self.db_session
         stmt = MessageTag.__table__.delete() \
             .where(MessageTag.message_id.in_(tag_ids))
         db_session.execute(stmt)
         db_session.commit()
 
     def get_all_tags(self, limit=None):
-        db_session = self.get_session()
+        db_session = self.db_session
         tags = db_session.query(MessageTag)
         if limit is not None:
             tags = tags.limit(limit)

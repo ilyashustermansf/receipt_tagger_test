@@ -9,25 +9,24 @@ class TableBase(object):
     """
     Base class for MySQL table implementations.
     """
-    schema = 'default'
+    SCHEMA = 'default'
 
     def __init__(self, table_name, columns):
         self.table_name = table_name
         self.columns = columns
+        self.db = None
 
     def insert_data_frame(self, data_frame):
         assert isinstance(data_frame, pd.DataFrame)
-        db = DbSqlAlchemy()
-        db.connect()
         data_frame = data_frame.fillna('')
-        data_frame.to_sql(con=db.connection,
+        data_frame.to_sql(con=self.db.connection,
                           name=self.table_name,
                           if_exists='append',
                           chunksize=10000,
                           index=False)
-        db.disconnect()
         return data_frame
 
     def get_session(self):
-        session = SqlAlchemySession.get_session(self.schema)
-        return session.db.session
+        session = SqlAlchemySession.get_session(self.SCHEMA)
+        self.db = session.db
+        return self.db.session

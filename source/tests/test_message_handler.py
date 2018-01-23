@@ -1,5 +1,5 @@
 import logging
-from unittest import TestCase
+from unittest import TestCase, skip
 import os
 from source.message_tag_handler import MessagesTagHandler
 
@@ -15,7 +15,7 @@ class TestMessageHandler(TestCase):
             return f.read()
 
     def setUp(self):
-        os.environ.setdefault('MESSAGE_DATABASE_MOCK', 'TRUE')
+        # os.environ.setdefault('MESSAGE_DATABASE_MOCK', 'TRUE')
         os.environ.setdefault('TEST_DIRECTORY_ENV', 'True')
         self.message_handler = MessagesTagHandler(messages_limit=50)
         self.tags = [{'message_id': 2698406951, 'is_receipt': False},
@@ -104,9 +104,10 @@ class TestMessageHandler(TestCase):
 
     def test_get_messages_contents(self):
         self.message_handler.messages_limit = 10
-        messages_contents = self.message_handler\
+        messages_contents = self.message_handler \
             .get_next_messages_with_content()
         self.assertEqual(len(messages_contents), 10)
         for message in messages_contents:
             self.assertTrue('content' in message and 'id' in message)
-            self.assertEqual(message['content'], self.get_html_content(message['id']))
+            self.assertEqual(message['content'],
+                             self.get_html_content(message['id']))
