@@ -4,15 +4,20 @@ import tornado.ioloop
 import tornado.web
 from tornado.options import parse_command_line
 
-
+from common.debug_utils import is_dev_environment
 from message_tag_handler import MessagesTagHandler
 
 CLIENT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                            'web_client'))
 CLIENT_STATIC = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                              'web_client/static_files'))
-MESSAGES_STATIC = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                               'tests/efs_messages/mnt/efs'))
+if is_dev_environment():
+    STORAGE_DIR = 'tests/efs_messages/mnt/efs'
+    MESSAGES_STATIC = os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                                   STORAGE_DIR))
+else:
+    STORAGE_DIR = '/mnt/efs/'
+    MESSAGES_STATIC = os.path.abspath(STORAGE_DIR)
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -30,7 +35,6 @@ class MainHandler(tornado.web.RequestHandler):
 class MessagesStaticHandler(tornado.web.StaticFileHandler):
 
     def parse_url_path(self, url_path):
-        # url_path = get_message_file_path(url_path)
         url_path = MessagesTagHandler.get_html_file_path(url_path)
         url_path = '{}/{}'.format(MESSAGES_STATIC, url_path)
         return url_path
