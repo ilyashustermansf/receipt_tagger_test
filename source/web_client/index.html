@@ -103,7 +103,7 @@
                     self.loading = true;
                     axios.get('/get_messages')
                       .then(function (response) {
-                          self.insertTagsIfExist();
+                        self.insertTagsIfExist();
                         localStorage.setItem('messages', JSON.stringify(response.data));
                         localStorage.setItem('tags', JSON.stringify([]));
                         localStorage.setItem('countMessage', 0);
