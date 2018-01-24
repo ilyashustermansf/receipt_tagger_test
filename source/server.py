@@ -32,12 +32,17 @@ class MainHandler(tornado.web.RequestHandler):
             self.write(file.read())
 
 
-class MessagesStaticHandler(tornado.web.StaticFileHandler):
+# class MessagesStaticHandler(tornado.web.StaticFileHandler):
+#
+#     def parse_url_path(self, url_path):
+#         url_path = MessagesTagHandler.get_html_content(url_path)
+#         url_path = '{}/{}'.format(MESSAGES_STATIC, url_path)
+#         return url_path
 
-    def parse_url_path(self, url_path):
-        url_path = MessagesTagHandler.get_html_content(url_path)
-        url_path = '{}/{}'.format(MESSAGES_STATIC, url_path)
-        return url_path
+class MessageContentHandler(tornado.web.RequestHandler):
+
+    def get(self, message_id):
+        return MessagesTagHandler.get_html_content(message_id)
 
 
 class MessageHandler(tornado.web.RequestHandler):
@@ -62,15 +67,15 @@ class AddTagsHandler(MessageHandler):
                 return
             self.message_tag_handler.add_tags(tags)
 
-
 def make_app():
     message_tag_table = dict(message_tag_table=
                              MessagesTagHandler(messages_limit=50))
     handlers = [
         (r'/static_files/(.*)', tornado.web.StaticFileHandler,
          {'path': CLIENT_STATIC}),
-        (r'/messages/(.*)', MessagesStaticHandler,
-         {'path': MESSAGES_STATIC}),
+        # (r'/messages/(.*)', MessagesStaticHandler,
+        #  {'path': MESSAGES_STATIC}),
+        (r'/messages/(.*)', MessageContentHandler),
         (r'/', MainHandler),
         (r'/get_messages', MessageFetchHandler, message_tag_table),
         (r'/add_tags', AddTagsHandler, message_tag_table),

@@ -29,8 +29,8 @@ Vue.use(VueMaterial.default);
         iframeLoaded: function () {
           var iFrameID = document.getElementById('iframe_message');
           if(iFrameID) {
-              iFrameID.height = "";
-              iFrameID.width = "";
+              iFrameID.height = '';
+              iFrameID.width = '';
               var width = 1000;
               var height = 700;
               // if (iFrameID.contentWindow.document.body != null){
@@ -43,8 +43,8 @@ Vue.use(VueMaterial.default);
               //           height = scrollHeight;
               //       }
               // }
-              iFrameID.height = height + "px";
-              iFrameID.width = width + "px";
+              iFrameID.height = height + 'px';
+              iFrameID.width = width + 'px';
           }
         },
         initiateMessages: function(){
@@ -107,17 +107,17 @@ var app = new Vue({
                 sendAnswerYes: function () {
                     // TODO send answer message_id + yes/no
                     // TODO load next message get next iframe to display
-                    console.log("answered yes");
+                    console.log('answered yes');
                     this.handelingNextMessage(this.prepareTag(true,
                         message_element_view.messageId));
                 },
                 sendAnswerNo: function () {
-                    console.log("answered no");
+                    console.log('answered no');
                     this.handelingNextMessage(this.prepareTag(false,
                         message_element_view.messageId));
                 },
                 sendAnswerSkip: function (){
-                    console.log("answered skip");
+                    console.log('answered skip');
                     this.handelingNextMessage(null);
                 },
                 handelingNextMessage: function (answer){
@@ -127,7 +127,7 @@ var app = new Vue({
                     else{
                         this.insertTag(answer);
                     }
-                    console.log("loading next message..."+answer);
+                    console.log('loading next message...'+answer);
                     var nextMessage = message_element_view.getNextMessage();
                     message_element_view.messageDomain = nextMessage['url'];
                 },
