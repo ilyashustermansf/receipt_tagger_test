@@ -2,7 +2,7 @@ DATABASES = {
     'default': {
         'USER': 'analytics',
         'PASSWORD': 'nhanmchgnaphg!',
-        'HOST': 'analytics-db.internal.superfly.com',
+        'HOST': 'analytics-db.superfly.com',
         'NAME': 'analytics',
         'PORT': '5432'
     },
