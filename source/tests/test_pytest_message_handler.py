@@ -1,5 +1,7 @@
 from pytest import fixture
 import os
+
+from common.persistence_utils import get_message_content
 from source.message_tag_handler import MessagesTagHandler
 
 MESSAGES_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),
@@ -37,7 +39,7 @@ def messages():
 
 @fixture
 def html():
-    return get_html_content(message_id=2698406951)
+    return get_message_content(message_id=2698406951)
 
 
 def test_load_fifty_messages(message_handler):
@@ -134,4 +136,4 @@ def test_get_messages_contents(message_handler):
     assert len(messages_contents) == 10
     for message in messages_contents:
         assert 'content' in message and 'id' in message
-        assert message['content'] == get_html_content(message['id'])
+        assert message['content'] == get_message_content(message['id'])

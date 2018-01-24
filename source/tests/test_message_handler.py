@@ -1,6 +1,7 @@
 import logging
-from unittest import TestCase, skip
+from unittest import TestCase
 import os
+from common.persistence_utils import get_message_content
 from source.message_tag_handler import MessagesTagHandler
 
 MESSAGES_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),
@@ -11,11 +12,10 @@ class TestMessageHandler(TestCase):
 
     @classmethod
     def get_html_content(cls, message_id):
-        with open('{}/{}.html'.format(MESSAGES_PATH, message_id)) as f:
-            return f.read()
+        return get_message_content(message_id)
 
     def setUp(self):
-        os.environ.setdefault('MESSAGE_DATABASE_MOCK', 'TRUE')
+        # os.environ.setdefault('MESSAGE_DATABASE_MOCK', 'TRUE')
         os.environ.setdefault('TEST_DIRECTORY_ENV', 'True')
         self.message_handler = MessagesTagHandler(messages_limit=50)
         self.tags = [{'message_id': 2698406951, 'is_receipt': False},
