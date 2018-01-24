@@ -3,7 +3,7 @@ import os
 import tornado.ioloop
 import tornado.web
 from tornado.options import parse_command_line
-
+from common.persistence_utils import get_message_content
 from common.debug_utils import is_dev_environment
 from message_tag_handler import MessagesTagHandler
 
@@ -42,7 +42,7 @@ class MainHandler(tornado.web.RequestHandler):
 class MessageContentHandler(tornado.web.RequestHandler):
 
     def get(self, message_id):
-        return MessagesTagHandler.get_html_content(message_id)
+        return get_message_content(message_id)
 
 
 class MessageHandler(tornado.web.RequestHandler):
