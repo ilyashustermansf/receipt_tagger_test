@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import tornado.ioloop
 import tornado.web
@@ -35,6 +36,7 @@ class MainHandler(tornado.web.RequestHandler):
 class MessageContentHandler(tornado.web.RequestHandler):
 
     def get(self, message_id):
+        logging.info('Requested message_id={}'.format(message_id))
         self.write(get_message_content(message_id))
 
 
