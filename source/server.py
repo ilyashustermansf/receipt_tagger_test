@@ -35,7 +35,7 @@ class MainHandler(tornado.web.RequestHandler):
 class MessagesStaticHandler(tornado.web.StaticFileHandler):
 
     def parse_url_path(self, url_path):
-        url_path = MessagesTagHandler.get_html_file_path(url_path)
+        url_path = MessagesTagHandler.get_html_content(url_path)
         url_path = '{}/{}'.format(MESSAGES_STATIC, url_path)
         return url_path
 

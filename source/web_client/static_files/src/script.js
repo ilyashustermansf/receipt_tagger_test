@@ -80,6 +80,7 @@ Vue.use(VueMaterial.default);
             var message = messages[count];
             this.messageId = message['id'];
             var url = getMessageUrl(this.messageId);
+            console.log('url='+url);
             incrementMessageCount(count);
             this.iframeLoaded();
             return {url : url, content: message['content']}
