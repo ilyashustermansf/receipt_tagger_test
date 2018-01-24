@@ -28,6 +28,7 @@ Vue.use(VueMaterial.default);
     methods: {
         iframeLoaded: function () {
           var iFrameID = document.getElementById('iframe_message');
+          iFrameID.contentWindow.location.reload();
           if(iFrameID) {
               iFrameID.height = '';
               iFrameID.width = '';
@@ -46,6 +47,7 @@ Vue.use(VueMaterial.default);
               iFrameID.height = height + 'px';
               iFrameID.width = width + 'px';
           }
+
         },
         initiateMessages: function(){
             var self = this;
@@ -83,7 +85,7 @@ Vue.use(VueMaterial.default);
             console.log('url='+url);
             incrementMessageCount(count);
             this.iframeLoaded();
-            return {url : url, content: message['content']}
+            return {url : url}
         },
         insertTagsIfExist: function () {
             var tags = JSON.parse(localStorage.getItem('tags'));
