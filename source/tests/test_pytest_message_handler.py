@@ -96,11 +96,11 @@ def test_get_messages_urls(message_handler, messages):
 def test_get_next_messages_from_already_tagged_messages(message_handler,
                                                         messages):
     tagged_messages = messages
-    next_messages = [msg['id'] for msg in
+    next_messages = [message['id'] for message in
                      message_handler.get_messages_not_in(
                          tagged_messages)]
-    zero_messages = [msg_id for msg_id in next_messages
-                     if msg_id in tagged_messages]
+    zero_messages = [message_id for message_id in next_messages
+                     if message_id in tagged_messages]
     assert len(zero_messages) == 0, zero_messages
 
 

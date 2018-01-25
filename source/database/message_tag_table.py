@@ -31,9 +31,9 @@ class MessageTagTable(TableBase):
 
     def delete_tags(self, tag_ids):
         db_session = self.db_session
-        stmt = MessageTag.__table__.delete() \
+        statement = MessageTag.__table__.delete() \
             .where(MessageTag.message_id.in_(tag_ids))
-        db_session.execute(stmt)
+        db_session.execute(statement)
         db_session.commit()
 
     def get_all_tags(self, limit=None):

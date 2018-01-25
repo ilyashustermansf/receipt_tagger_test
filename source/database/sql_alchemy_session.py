@@ -24,9 +24,3 @@ class SqlAlchemySession(object):
     def __del__(self):
         self._cached_sessions[self.connection_name] = None
         self.db.disconnect()
-        # print(self.connection_name)
-        # for key in self._cached_sessions.items():
-        #     self._cached_sessions[key].db.disconnect()
-        #     if key in self._cached_sessions:
-        #         self._cached_sessions[key] = None
-        # self.db.disconnect()

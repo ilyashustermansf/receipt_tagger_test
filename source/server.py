@@ -3,7 +3,8 @@ import logging
 import os
 import tornado.ioloop
 import tornado.web
-from tornado.options import parse_command_line
+from tornado.options import parse_command_line, parse_config_file, options, \
+    define
 from common.persistence_utils import get_message_content
 from common.debug_utils import is_dev_environment
 from message_tag_handler import MessagesTagHandler
@@ -77,6 +78,8 @@ def make_app():
 
 
 if __name__ == '__main__':
+    file = open('log.txt', 'w+')
+    options.log_file_prefix = 'logs/log.txt'
     parse_command_line()
     app = make_app()
     app.listen(5000)

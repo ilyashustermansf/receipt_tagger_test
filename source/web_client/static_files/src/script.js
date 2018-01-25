@@ -15,7 +15,7 @@ Vue.use(VueMaterial.default);
     el: '#message_content',
     data: {
         loading: false,
-        title: 'Is this Message Receipt?',
+        title: 'Is this a Message Receipt?',
         messageDomain: '',
         messageId: null,
         messageContent: ''

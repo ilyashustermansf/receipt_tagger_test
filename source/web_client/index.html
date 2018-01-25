@@ -15,7 +15,9 @@
 <div>
 <div class="text-center">
 
+
     <div id="message_content">
+
         <h1>{{title}}</h1>
 
             <div v-if="loading" class="sk-cube-grid">
@@ -37,8 +39,11 @@
 
    <div id="app">
         <span>
+            <span class="badge badge-default">1 | Y</span>
        <md-button v-on:click="sendAnswerYes" class="btn btn-success btn-lg">Yes</md-button>
+            <span class="badge badge-default">2 | N</span>
        <md-button v-on:click="sendAnswerNo" class="btn btn-danger btn-lg">No</md-button>
+            <span class="badge badge-default">3 | S</span>
        <md-button v-on:click="sendAnswerSkip" class="btn btn-secondary btn-lg">Skip</md-button>
         </span>
     </div>
