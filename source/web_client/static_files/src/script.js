@@ -22,32 +22,27 @@ Vue.use(VueMaterial.default);
     },
     mounted: function(){
         localStorage.setItem('tags', JSON.stringify([]));
-        this.iframeLoaded();
         this.initiateMessages();
     },
     methods: {
         iframeLoaded: function () {
           var iFrameID = document.getElementById('iframe_message');
-          iFrameID.contentWindow.location.reload();
+          this.reloadIframe();
           if(iFrameID) {
               iFrameID.height = '';
               iFrameID.width = '';
               var width = 1000;
               var height = 700;
-              // if (iFrameID.contentWindow.document.body != null){
-              //       var scrollWidth = iFrameID.contentWindow.document.body.scrollWidth;
-              //       var scrollHeight = iFrameID.contentWindow.document.body.scrollHeight;
-              //       if(scrollWidth> width){
-              //           width = scrollWidth;
-              //       }
-              //       if (scrollHeight> height){
-              //           height = scrollHeight;
-              //       }
-              // }
               iFrameID.height = height + 'px';
               iFrameID.width = width + 'px';
           }
 
+        },
+        reloadIframe: function(){
+          var iFrameID = document.getElementById('iframe_message');
+          if (iFrameID !== null) {
+              iFrameID.contentWindow.location.reload();
+          }
         },
         initiateMessages: function(){
             var self = this;
@@ -63,6 +58,7 @@ Vue.use(VueMaterial.default);
                 localStorage.setItem('countMessage', 0);
                 console.log('Got messages!');
                 self.loading = false;
+                self.setNextMessage();
               })
               .catch(function (error) {
                 console.log(error);
@@ -77,6 +73,7 @@ Vue.use(VueMaterial.default);
             console.log('length='+messages.length);
             if(count === messages.length){
                 this.initiateMessages();
+                messages = JSON.parse(localStorage.getItem('messages'));
                 count = 0;
             }
             var message = messages[count];
@@ -84,8 +81,12 @@ Vue.use(VueMaterial.default);
             var url = getMessageUrl(this.messageId);
             console.log('url='+url);
             incrementMessageCount(count);
-            this.iframeLoaded();
             return {url : url}
+        },
+        setNextMessage: function(){
+            var nextMessage = message_element_view.getNextMessage();
+            this.messageDomain = nextMessage['url'];
+            this.iframeLoaded();
         },
         insertTagsIfExist: function () {
             var tags = JSON.parse(localStorage.getItem('tags'));
@@ -130,8 +131,7 @@ var app = new Vue({
                         this.insertTag(answer);
                     }
                     console.log('loading next message...'+answer);
-                    var nextMessage = message_element_view.getNextMessage();
-                    message_element_view.messageDomain = nextMessage['url'];
+                    message_element_view.setNextMessage()
                 },
                 prepareTag: function (answer, messageId) {
                     return {'message_id': messageId,
