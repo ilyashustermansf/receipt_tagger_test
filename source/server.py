@@ -79,7 +79,7 @@ def make_app():
 
 if __name__ == '__main__':
     file = open('log.txt', 'w+')
-    options.log_file_prefix = 'logs/log.txt'
+    options.log_file_prefix = 'log.txt'
     parse_command_line()
     app = make_app()
     app.listen(5000)
